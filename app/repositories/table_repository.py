@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import delete, select, update
 
 from app.repositories import BaseRepository
 from app.models import TableORM
@@ -19,14 +19,40 @@ class TableRepository(BaseRepository):
             
             return table
         
-    async def get_one(self):
-        pass 
+    async def get_one(self, id: int) -> TableORM | None:
+        async with self.session as session:
+            query = select(TableORM).where(TableORM.id == id)
+            result = await session.execute(query)
+            
+            return result.scalars().one_or_none()
     
-    async def get_all(self):
-        pass 
+    async def get_all(self) -> list[TableORM]:
+        async with self.session as session:
+            query = select(TableORM)
+            result = await session.execute(query)
+            
+            return result.scalars().all() 
     
-    async def update(self):
-        pass 
+    async def update(self, id: int, status: str) -> TableORM:
+        async with self.session as session:
+            query = update(TableORM).where(TableORM.id == id).values(
+                status=status
+                ).returning(TableORM)
+            result = await session.execute(query)
+            await session.commit()
+            
+            table = result.scalars().one()
+            await session.refresh(table)
+            
+            return table
+            
     
-    async def delete(self):
-        pass
+    async def delete(self, id: int) -> None:
+        async with self.session as session:
+            query = delete(TableORM).where(
+                TableORM.id == id
+                ).returning(TableORM)
+            await session.execute(query)
+            await session.commit()
+            
+            return True

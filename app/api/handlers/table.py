@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app.api import get_table_service
+from app.core.enum import TableStatus
 from app.schemas import TableScheme
 from app.services import TableService
 
@@ -10,24 +11,36 @@ router = APIRouter(
     tags=["tables"]
 )
 
-@router.get("/")
-async def get_table():
-    pass 
+@router.get("/{table_id}")
+async def get_one_table(
+    table_id: int,
+    table_service: TableService = Depends(get_table_service)
+) -> TableScheme:
+    return await table_service.get_table(table_id)
 
 @router.get("/")
-async def get_tables():
-    pass 
+async def get_tables(
+    table_service: TableService = Depends(get_table_service)
+) -> list[TableScheme]:
+    return await table_service.get_tables() 
 
 @router.post("/")
-async def create_tables(
+async def create_table(
     table_service: TableService = Depends(get_table_service)
 ) -> TableScheme:
     return await table_service.create_table()
 
-@router.put("/")
-async def update_table():
-    pass 
+@router.put("/{table_id}")
+async def update_table(
+    table_id: int, 
+    table_status: TableStatus,
+    table_service: TableService = Depends(get_table_service)
+) -> TableScheme:
+    return await table_service.update_table(table_id, table_status)  
 
-@router.delete("/")
-async def delete_table():
-    pass 
+@router.delete("/{table_id}")
+async def delete_table(
+    table_id: int,
+    table_service: TableService = Depends(get_table_service)
+) -> bool:
+    return await table_service.delete_table(table_id)
