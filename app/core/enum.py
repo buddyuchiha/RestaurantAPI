@@ -10,3 +10,8 @@ class BookingStatus(Enum):
     ACTIVE = "active"
     INACTIVE = "inactive"
     
+
+class UserUpdateField(Enum):
+    NAME = "real_name"
+    MAIL = "mail"
+    PHONE = "phone_number"
