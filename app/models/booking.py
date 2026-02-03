@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import ForeignKey, DateTime
+from sqlalchemy import ForeignKey, DateTime, Enum
 
 
 from app.core import BookingStatus
@@ -24,4 +24,7 @@ class BookingORM(Base):
         nullable=False
     )
     datetime: Mapped[datetime] = mapped_column(DateTime, nullable=False)
-    status: Mapped[str] = mapped_column(default=BookingStatus.ACTIVE)  
+    status: Mapped[str] = mapped_column(
+        Enum(BookingStatus), 
+        default=BookingStatus.ACTIVE
+    )  
