@@ -1,4 +1,5 @@
-from app.core.settings import Settings
+from app.core.enum import TableStatus, BookingStatus
+from app.core.settings import settings
 
 
-__all__ = ["Settings"]
+__all__ = ["settings", "TableStatus", "BookingStatus"]

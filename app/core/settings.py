@@ -12,9 +12,8 @@ class DatabaseSettings(BaseSettings):
     POSTGRES_PORT: int 
     POSTGRES_HOST: str 
 
-    @property
     def database_url(self):
-        return f"postgresql+psycopg2://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
 class CacheSettings():
     pass 
@@ -27,3 +26,6 @@ class Settings(
     CacheSettings
 ):
     model_config = SettingsConfigDict(env_file=".env")
+    
+
+settings = Settings()
