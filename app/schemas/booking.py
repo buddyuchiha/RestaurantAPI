@@ -5,15 +5,6 @@ from pydantic import BaseModel, ConfigDict
 from app.core import BookingStatus
 
 
-class BookingScheme(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    
-    user_id: int 
-    table_id: int 
-    datetime: datetime
-    status: BookingStatus
-    
-    
 class BookingSchemeInput(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
@@ -22,11 +13,9 @@ class BookingSchemeInput(BaseModel):
     status: BookingStatus
     
     
-class BookingSchemeResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int    
+class BookingScheme(BookingSchemeInput): 
     user_id: int 
-    table_id: int 
-    datetime: datetime
-    status: BookingStatus
+    
+
+class BookingSchemeResponse(BookingScheme):
+    id: int    

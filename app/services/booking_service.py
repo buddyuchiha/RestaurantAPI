@@ -1,13 +1,20 @@
 from datetime import datetime
 from app.core import BookingStatus, BookingUpdateField
+from app.core.exception import TableNotFound
 from app.repositories import BookingRepository
 from app.schemas import BookingScheme, BookingSchemeResponse
 from app.schemas.booking import BookingSchemeInput
+from app.services.table_service import TableService
 
 
 class BookingService:
-    def __init__(self, booking_repository: BookingRepository) -> None:
+    def __init__(
+        self, 
+        booking_repository: BookingRepository,
+        table_service: TableService
+    ) -> None:
         self.booking_repository = booking_repository   
+        self.table_service = table_service
     
     async def create_booking(
         self, 
@@ -17,6 +24,8 @@ class BookingService:
         new_booking_scheme = BookingScheme(
             **booking_scheme.model_dump(), user_id=user_id
         )
+        
+        await self.table_service.get_table(booking_scheme.table_id)
         
         booking = await self.booking_repository.create(new_booking_scheme)
         

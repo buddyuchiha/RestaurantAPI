@@ -12,3 +12,11 @@ class TokenExpired(Exception):
 
 class TokenNotCorrect(Exception):
     detail = "Token not correct"
+    
+    
+class UserExists(Exception):
+    detail = "User already exists"
+    
+    
+class TableNotFound(Exception):
+    detail = "Table not found"

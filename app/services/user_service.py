@@ -43,4 +43,5 @@ class UserService:
             raise UserNotFound
            
         return UserCreateScheme.model_validate(user)
+    
         

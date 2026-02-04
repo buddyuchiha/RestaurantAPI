@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_auth_service
 from app.core import WrongPassword, UserNotFound
+from app.core.exception import UserExists
 from app.schemas import (
     UserScheme,
     UserSchemeResponse,
@@ -21,7 +22,13 @@ async def regitser(
     user: UserScheme,
     auth_service: AuthService = Depends(get_auth_service)
 ) -> UserSchemeResponse:
-    return await auth_service.register_user(user)
+    try:
+        return await auth_service.register_user(user)
+    except UserExists as e:
+        raise HTTPException(
+            status_code=409,
+            detail=e.detail
+        )
 
 @router.post("/login")
 async def login(

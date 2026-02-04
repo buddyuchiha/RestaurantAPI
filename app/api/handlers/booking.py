@@ -1,9 +1,10 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_booking_service
 from app.api.dependencies import get_request_user_id
 from app.core import BookingStatus, BookingUpdateField
+from app.core.exception import TableNotFound
 from app.schemas import BookingScheme, BookingSchemeResponse
 from app.schemas.booking import BookingSchemeInput
 from app.services import BookingService
@@ -33,7 +34,13 @@ async def create_booking(
     user_id = Depends(get_request_user_id),
     booking_service: BookingService = Depends(get_booking_service)
 ) -> BookingSchemeResponse:
-    return await booking_service.create_booking(bookings_scheme, user_id)
+    try:
+        return await booking_service.create_booking(bookings_scheme, user_id)
+    except TableNotFound as e:
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail
+        )
 
 @router.put("/info/{booking_id}")
 async def update_booking_info(

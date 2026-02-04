@@ -47,9 +47,10 @@ def get_booking_repository(
 
 
 def get_booking_service(
-    booking_repository: BookingRepository = Depends(get_booking_repository)
+    booking_repository: BookingRepository = Depends(get_booking_repository),
+    table_service: TableService = Depends(get_table_service)
 ) -> BookingService:
-    return BookingService(booking_repository)
+    return BookingService(booking_repository, table_service)
 
 
 def get_auth_service(

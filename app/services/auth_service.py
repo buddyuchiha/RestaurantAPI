@@ -7,7 +7,7 @@ from app.core import (
     verify_hashed_password,
     WrongPassword
 )
-from app.core.exception import TokenExpired, TokenNotCorrect
+from app.core.exception import TokenExpired, TokenNotCorrect, UserExists
 from app.schemas import (
     UserScheme,
     UserSchemeResponse,
@@ -22,6 +22,9 @@ class AuthService:
         self.user_service = user_service
     
     async def register_user(self, user: UserScheme) -> UserSchemeResponse:
+        if await self.user_service.get_user_by_login(user.login):
+            raise UserExists
+        
         hashed_password = get_hashed_password(user.password)
         user.password = hashed_password
         

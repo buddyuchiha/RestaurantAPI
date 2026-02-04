@@ -1,4 +1,5 @@
 from app.core import TableStatus
+from app.core.exception import TableNotFound
 from app.schemas import TableScheme
 from app.repositories import TableRepository
 
@@ -14,6 +15,9 @@ class TableService:
     
     async def get_table(self, id: int) -> TableScheme:
         table = await self.table_repository.get_one(id)
+        
+        if not table:
+            raise TableNotFound
         
         return TableScheme.model_validate(table)
     

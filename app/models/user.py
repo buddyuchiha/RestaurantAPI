@@ -7,7 +7,7 @@ class UserORM(Base):
     __tablename__ = "users"
     
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    login: Mapped[str] = mapped_column(nullable=False)
+    login: Mapped[str] = mapped_column(nullable=False, unique=True)
     password: Mapped[str] = mapped_column(nullable=False)
     real_name: Mapped[str] = mapped_column(nullable=False)
     mail: Mapped[str] = mapped_column(nullable=False)
