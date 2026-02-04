@@ -2,8 +2,10 @@ from datetime import datetime
 from fastapi import APIRouter, Depends
 
 from app.api import get_booking_service
+from app.api.dependencies import get_request_user_id
 from app.core import BookingStatus, BookingUpdateField
 from app.schemas import BookingScheme, BookingSchemeResponse
+from app.schemas.booking import BookingSchemeInput
 from app.services import BookingService
 
 
@@ -27,10 +29,11 @@ async def get_bookings(
 
 @router.post("/")
 async def create_booking(
-    bookings_scheme: BookingScheme,
+    bookings_scheme: BookingSchemeInput,
+    user_id = Depends(get_request_user_id),
     booking_service: BookingService = Depends(get_booking_service)
 ) -> BookingSchemeResponse:
-    return await booking_service.create_booking(bookings_scheme)
+    return await booking_service.create_booking(bookings_scheme, user_id)
 
 @router.put("/info/{booking_id}")
 async def update_booking_info(
@@ -62,5 +65,3 @@ async def delete_booking(
     booking_service: BookingService = Depends(get_booking_service)
 ) -> bool:
     return await booking_service.delete_booking(booking_id)
-
-# @router.get("/act")

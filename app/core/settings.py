@@ -5,6 +5,9 @@ class AppSettings(BaseSettings):
     APP_PORT: int 
     APP_HOST: str 
     APP_HASH_ALGORITHM: str 
+    APP_SECRET_KEY: str
+    APP_ENCODE_ALGORITHM: str
+    APP_ACCESS_TOKEN_EXPIRE_MINUTES: int
 
 
 class DatabaseSettings(BaseSettings):

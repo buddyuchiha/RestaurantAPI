@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_auth_service
 from app.core import WrongPassword, UserNotFound
-from app.schemas import UserScheme, UserSchemeResponse, UserLoginScheme
+from app.schemas import (
+    UserScheme,
+    UserSchemeResponse,
+    UserLoginScheme,
+    TokenResponse
+)   
 from app.services import AuthService
 
 
@@ -22,7 +27,7 @@ async def regitser(
 async def login(
     user: UserLoginScheme,
     auth_service: AuthService = Depends(get_auth_service)
-):
+) -> TokenResponse:
     try: 
         return await auth_service.login_user(user)
     except UserNotFound as e:

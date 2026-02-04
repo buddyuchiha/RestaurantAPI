@@ -6,7 +6,9 @@ from app.core.enum import (
 )
 from app.core.exception import (
     UserNotFound,
-    WrongPassword
+    WrongPassword,
+    TokenExpired,
+    TokenNotCorrect
 )
 from app.core.settings import settings
 from app.core.utils import get_hashed_password, verify_hashed_password
@@ -21,5 +23,7 @@ __all__ = [
     "get_hashed_password",
     "verify_hashed_password",
     "UserNotFound",
-    "WrongPassword"
+    "WrongPassword",
+    "TokenExpired",
+    "TokenNotCorrect"
     ]

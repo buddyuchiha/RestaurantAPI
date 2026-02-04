@@ -2,6 +2,7 @@ from datetime import datetime
 from app.core import BookingStatus, BookingUpdateField
 from app.repositories import BookingRepository
 from app.schemas import BookingScheme, BookingSchemeResponse
+from app.schemas.booking import BookingSchemeInput
 
 
 class BookingService:
@@ -10,9 +11,14 @@ class BookingService:
     
     async def create_booking(
         self, 
-        booking_scheme: BookingScheme
+        booking_scheme: BookingSchemeInput,
+        user_id: int
     ) -> BookingSchemeResponse:
-        booking = await self.booking_repository.create(booking_scheme)
+        new_booking_scheme = BookingScheme(
+            **booking_scheme.model_dump(), user_id=user_id
+        )
+        
+        booking = await self.booking_repository.create(new_booking_scheme)
         
         return BookingSchemeResponse.model_validate(booking) 
     

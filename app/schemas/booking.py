@@ -14,6 +14,14 @@ class BookingScheme(BaseModel):
     status: BookingStatus
     
     
+class BookingSchemeInput(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
+    table_id: int 
+    datetime: datetime
+    status: BookingStatus
+    
+    
 class BookingSchemeResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
