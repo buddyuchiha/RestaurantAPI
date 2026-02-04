@@ -23,7 +23,10 @@ class BookingORM(Base):
         ForeignKey("tables.id"), 
         nullable=False
     )
-    datetime: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    datetime: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), 
+        nullable=False
+        )
     status: Mapped[str] = mapped_column(
         Enum(BookingStatus), 
         default=BookingStatus.ACTIVE

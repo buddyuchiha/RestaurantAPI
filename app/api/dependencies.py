@@ -2,10 +2,16 @@ from fastapi import Depends
 from sqlalchemy.orm import Session 
 
 from app.database import get_session
-from app.repositories import TableRepository
-from app.repositories import UserRepository
-from app.services import TableService
-from app.services import UserService
+from app.repositories import (
+    TableRepository,
+    UserRepository,
+    BookingRepository
+)
+from app.services import (
+    TableService,
+    UserService,
+    BookingService
+)
 
 
 def get_table_repository(
@@ -30,3 +36,15 @@ def get_user_service(
     user_repository: UserRepository = Depends(get_user_repository)
 ) -> UserService:
     return UserService(user_repository)
+
+
+def get_booking_repository(
+    session: Session = Depends(get_session)
+) -> BookingRepository:
+    return BookingRepository(session)
+
+
+def get_booking_service(
+    booking_repository: BookingRepository = Depends(get_booking_repository)
+) -> BookingService:
+    return BookingService(booking_repository)

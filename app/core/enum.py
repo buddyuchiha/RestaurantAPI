@@ -15,3 +15,9 @@ class UserUpdateField(Enum):
     NAME = "real_name"
     MAIL = "mail"
     PHONE = "phone_number"
+    
+    
+class BookingUpdateField(Enum):
+    USER = "user_id"
+    TABLE = "table_id"
+    DATETTIME = "datetime"
