@@ -56,10 +56,11 @@ async def update_booking_status(
         data
     )
     
-
 @router.delete("/{booking_id}")
 async def delete_booking(
     booking_id: int, 
     booking_service: BookingService = Depends(get_booking_service)
 ) -> bool:
     return await booking_service.delete_booking(booking_id)
+
+# @router.get("/act")

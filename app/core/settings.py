@@ -2,7 +2,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
-    pass 
+    APP_PORT: int 
+    APP_HOST: str 
+    APP_HASH_ALGORITHM: str 
 
 
 class DatabaseSettings(BaseSettings):
@@ -17,7 +19,6 @@ class DatabaseSettings(BaseSettings):
 
 class CacheSettings():
     pass 
-
 
 
 class Settings(

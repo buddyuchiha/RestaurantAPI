@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import delete, select, update
 
+from app.core.enum import TableStatus
 from app.repositories import BaseRepository
 from app.models import TableORM
 
@@ -56,3 +57,11 @@ class TableRepository(BaseRepository):
             await session.commit()
             
             return True
+        
+    async def get_all_by_status(self, status: TableStatus) -> list[TableORM]:
+        async with self.session as session:
+            query = select(TableORM).where(TableORM.status==status)
+            result = await session.execute(query)
+            
+            return result.scalars().all()
+    

@@ -10,7 +10,8 @@ from app.repositories import (
 from app.services import (
     TableService,
     UserService,
-    BookingService
+    BookingService,
+    AuthService
 )
 
 
@@ -48,3 +49,9 @@ def get_booking_service(
     booking_repository: BookingRepository = Depends(get_booking_repository)
 ) -> BookingService:
     return BookingService(booking_repository)
+
+
+def get_auth_service(
+    user_service: UserService = Depends(get_user_service)
+) -> AuthService:
+    return AuthService(user_service)

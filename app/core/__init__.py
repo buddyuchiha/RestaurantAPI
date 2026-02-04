@@ -4,7 +4,12 @@ from app.core.enum import (
     UserUpdateField,
     BookingUpdateField
 )
+from app.core.exception import (
+    UserNotFound,
+    WrongPassword
+)
 from app.core.settings import settings
+from app.core.utils import get_hashed_password, verify_hashed_password
 
 
 __all__ = [
@@ -12,5 +17,9 @@ __all__ = [
     "TableStatus",
     "BookingStatus",
     "UserUpdateField",
-    "BookingUpdateField"
+    "BookingUpdateField",
+    "get_hashed_password",
+    "verify_hashed_password",
+    "UserNotFound",
+    "WrongPassword"
     ]

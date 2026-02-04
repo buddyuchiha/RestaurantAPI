@@ -11,6 +11,13 @@ router = APIRouter(
     tags=["tables"]
 )
 
+@router.get("/status")
+async def get_tables_by_status(
+    table_status: TableStatus,
+    table_service: TableService = Depends(get_table_service)
+) -> list[TableScheme]:
+    return await table_service.get_tables_by_status(table_status)
+
 @router.get("/{table_id}")
 async def get_one_table(
     table_id: int,

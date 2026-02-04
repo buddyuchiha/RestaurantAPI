@@ -1,3 +1,4 @@
+from app.core import UserNotFound
 from app.repositories import UserRepository
 from app.schemas import UserScheme, UserSchemeResponse
 
@@ -33,3 +34,12 @@ class UserService:
     
     async def delete_user(self, id: int) -> bool:
         return await self.user_repository.delete(id)
+    
+    async def get_user_by_login(self, user_login: str) -> UserScheme:
+        user = await self.user_repository.get_user_by_login(user_login)
+    
+        if not user:
+            raise UserNotFound
+           
+        return UserScheme.model_validate(user)
+        

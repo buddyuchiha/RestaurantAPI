@@ -1,3 +1,4 @@
+from app.core import TableStatus
 from app.schemas import TableScheme
 from app.repositories import TableRepository
 
@@ -28,3 +29,13 @@ class TableService:
     
     async def delete_table(self, id: int) -> bool:
         return await self.table_repository.delete(id)
+    
+    async def get_tables_by_status(
+        self, 
+        table_status: TableStatus
+        ) -> list[TableScheme]:
+        tables = await self.table_repository.get_all_by_status(
+            (table_status)
+        )
+        
+        return [TableScheme.model_validate(table) for table in tables]

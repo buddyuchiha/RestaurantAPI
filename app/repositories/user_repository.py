@@ -52,10 +52,16 @@ class UserRepository:
             await session.refresh(user)
             return user 
 
-    
     async def delete(self, id: int) -> bool:
         async with self.session as session:
             query = delete(UserORM).where(UserORM.id == id)
             await session.execute(query)
             
             return True
+        
+    async def get_user_by_login(self, login: str) -> UserORM | None:
+        async with self.session as session:
+            query = select(UserORM).where(UserORM.login==login)
+            result = await session.execute(query)
+            
+            return result.scalars().one_or_none()
