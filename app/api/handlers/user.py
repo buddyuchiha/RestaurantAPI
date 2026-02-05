@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_user_service
-from app.core import UserUpdateField
+from app.core import UserUpdateField, logger
+from app.core.exception import UserNotFound
 from app.schemas import UserScheme, UserSchemeResponse
 from app.services import UserService
 
@@ -16,13 +17,27 @@ async def get_one_user(
     user_id: int,
     user_service: UserService = Depends(get_user_service)
 ) -> UserSchemeResponse:
-    return await user_service.get_user(user_id)
+    try:
+        return await user_service.get_user(user_id)
+    except UserNotFound as e:
+        logger.error(e.detail)
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail 
+        )
 
 @router.get("/")
 async def get_users(
     user_service: UserService = Depends(get_user_service)
 ) -> list[UserSchemeResponse]:
-    return await user_service.get_users()
+    try:
+        return await user_service.get_users()
+    except UserNotFound as e:
+        logger.error(e.detail)
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail
+        )
 
 @router.post("/")
 async def create_user(

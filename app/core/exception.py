@@ -20,3 +20,8 @@ class UserExists(Exception):
     
 class TableNotFound(Exception):
     detail = "Table not found"
+    
+    
+class BookingNotFound(Exception):
+    detail = "Booking not found"
+    

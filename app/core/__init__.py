@@ -10,6 +10,7 @@ from app.core.exception import (
     TokenExpired,
     TokenNotCorrect
 )
+from app.core.logging import logger
 from app.core.settings import settings
 from app.core.utils import get_hashed_password, verify_hashed_password
 
@@ -25,5 +26,6 @@ __all__ = [
     "UserNotFound",
     "WrongPassword",
     "TokenExpired",
-    "TokenNotCorrect"
+    "TokenNotCorrect",
+    "logger"
     ]

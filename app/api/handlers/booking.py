@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_booking_service
 from app.api.dependencies import get_request_user_id
-from app.core import BookingStatus, BookingUpdateField
-from app.core.exception import TableNotFound
+from app.core import BookingStatus, BookingUpdateField, logger
+from app.core.exception import BookingNotFound, TableNotFound
 from app.schemas import BookingScheme, BookingSchemeResponse
 from app.schemas.booking import BookingSchemeInput
 from app.services import BookingService
@@ -20,13 +20,28 @@ async def get_one_booking(
     booking_id: int,
     booking_service: BookingService = Depends(get_booking_service)
 ) -> BookingSchemeResponse:
-    return await booking_service.get_booking(booking_id)
+    try:
+        return await booking_service.get_booking(booking_id)
+    except BookingNotFound as e:
+        logger.error(e.detail)
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail
+        )
 
 @router.get("/")
 async def get_bookings(
     booking_service: BookingService = Depends(get_booking_service)
 ) -> list[BookingSchemeResponse]:
-    return await booking_service.get_bookings()
+    try:
+        return await booking_service.get_bookings()
+    except BookingNotFound as e:
+        logger.error(e.detail)
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail
+        )
+
 
 @router.post("/")
 async def create_booking(
@@ -37,6 +52,7 @@ async def create_booking(
     try:
         return await booking_service.create_booking(bookings_scheme, user_id)
     except TableNotFound as e:
+        logger.error(e.detail)
         raise HTTPException(
             status_code=404,
             detail=e.detail

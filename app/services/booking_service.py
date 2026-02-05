@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 
 from app.core import BookingStatus, BookingUpdateField
-from app.core.exception import TableNotFound
+from app.core.exception import BookingNotFound, TableNotFound
 from app.repositories import BookingRepository
 from app.schemas import BookingScheme, BookingSchemeResponse
 from app.schemas.booking import BookingSchemeInput
@@ -39,16 +39,24 @@ class BookingService:
     async def get_booking(self, booking_id: int) -> BookingSchemeResponse:
         booking = await self.booking_repository.get_one(booking_id)
         
+        if not booking:
+            raise BookingNotFound
+        
+        
         return BookingSchemeResponse.model_validate(booking) 
     
     async def get_bookings(self) -> list[BookingSchemeResponse]:
         if bookings := await self.cache_service.get_values("bookings"):
+            data = json.loads(bookings)
             return [
-                BookingSchemeResponse.model_validate(json.loads(booking)) \
-                    for booking in bookings 
+                BookingSchemeResponse.model_validate(item) \
+                    for item in data
             ]
         
         bookings = await self.booking_repository.get_all()
+        if not bookings:
+            raise BookingNotFound
+        
         serialized_bookings = [BookingSchemeResponse.model_validate(booking) \
             for booking in bookings
         ]

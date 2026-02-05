@@ -8,6 +8,7 @@ class AppSettings(BaseSettings):
     APP_SECRET_KEY: str
     APP_ENCODE_ALGORITHM: str
     APP_ACCESS_TOKEN_EXPIRE_MINUTES: int
+    APP_LOGGING_FILE: str
 
 
 class DatabaseSettings(BaseSettings):

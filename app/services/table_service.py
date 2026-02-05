@@ -30,12 +30,17 @@ class TableService:
     
     async def get_tables(self) -> list[TableScheme]:
         if tables := await self.cache_service.get_values("tables"):
+            data = json.loads(tables)
             return [
-                TableScheme.model_validate(json.loads(table)) \
-                    for table in tables
+                TableScheme.model_validate(item) \
+                    for item in data
             ]
         
         tables = await self.table_repository.get_all()
+        
+        if not tables:
+            raise TableNotFound
+        
         serialized_tables = [
             TableScheme.model_validate(table) for table in tables
         ]

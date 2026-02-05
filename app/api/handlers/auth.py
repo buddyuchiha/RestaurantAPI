@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_auth_service
-from app.core import WrongPassword, UserNotFound
+from app.core import WrongPassword, UserNotFound, logger
 from app.core.exception import UserExists
 from app.schemas import (
     UserScheme,
@@ -25,6 +25,7 @@ async def regitser(
     try:
         return await auth_service.register_user(user)
     except UserExists as e:
+        logger.error(e.detail)
         raise HTTPException(
             status_code=409,
             detail=e.detail
@@ -38,11 +39,13 @@ async def login(
     try: 
         return await auth_service.login_user(user)
     except UserNotFound as e:
+        logger.error(e.detail)
         raise HTTPException(
             status_code=404,
             detail=e.detail
         )
     except WrongPassword as e:
+        logger.error(e.detail)
         raise HTTPException(
             status_code=401,
             detail=e.detail

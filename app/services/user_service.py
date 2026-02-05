@@ -24,16 +24,24 @@ class UserService:
     async def get_user(self, id: int) -> UserSchemeResponse:
         user = await self.user_repository.get_one(id)
         
+        if not user:
+            raise UserNotFound
+        
         return UserSchemeResponse.model_validate(user)
     
     async def get_users(self) -> list[UserSchemeResponse]:
         if users := await self.cache_service.get_values("users"):
+            data = json.loads(users)
             return [
-                UserSchemeResponse.model_validate(json.loads(user)) \
-                    for user in users  
-            ]
+                UserSchemeResponse.model_validate(item) \
+                    for item in data
+                ]
         
         users = await self.user_repository.get_all()
+        
+        if not users:
+            raise UserNotFound
+        
         serialazied_users = [
             UserSchemeResponse.model_validate(user) \
                 for user in users

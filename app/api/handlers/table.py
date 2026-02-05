@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_table_service
+from app.core import logger
 from app.core.enum import TableStatus
+from app.core.exception import TableNotFound
 from app.schemas import TableScheme
 from app.services import TableService
 
@@ -23,13 +25,28 @@ async def get_one_table(
     table_id: int,
     table_service: TableService = Depends(get_table_service)
 ) -> TableScheme:
-    return await table_service.get_table(table_id)
+    try: 
+        return await table_service.get_table(table_id)
+    except TableNotFound as e:
+        logger.error(e.detail)
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail
+        )
 
 @router.get("/")
 async def get_tables(
     table_service: TableService = Depends(get_table_service)
 ) -> list[TableScheme]:
-    return await table_service.get_tables() 
+    try: 
+        logger.info("get_tables")
+        return await table_service.get_tables() 
+    except TableNotFound as e:
+        logger.error(e.detail)
+        raise HTTPException(
+            status_code=404,
+            detail=e.detail
+        )
 
 @router.post("/")
 async def create_table(
