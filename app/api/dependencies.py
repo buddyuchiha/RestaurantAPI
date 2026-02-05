@@ -1,5 +1,3 @@
-from typing import AsyncGenerator
-
 from fastapi import Depends, HTTPException, Request, Security, security
 import redis
 from sqlalchemy.orm import Session 

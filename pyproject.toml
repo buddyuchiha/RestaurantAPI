@@ -1,5 +1,5 @@
 [project]
-name = "restaurant-api"
+name = "restaurantapi"
 version = "0.1.0"
 description = ""
 authors = [
@@ -15,10 +15,10 @@ dependencies = [
     "pydantic-settings (>=2.12.0,<3.0.0)",
     "asyncpg (>=0.31.0,<0.32.0)",
     "psycopg2-binary (>=2.9.11,<3.0.0)",
-    "bcrypt (>=5.0.0,<6.0.0)",
     "passlib (>=1.7.4,<2.0.0)",
     "redis (>=7.1.0,<8.0.0)",
-    "python-jose[cryptography] (>=3.5.0,<4.0.0)"
+    "python-jose[cryptography] (>=3.5.0,<4.0.0)",
+    "bcrypt (==4.0.1)"
 ]
 
 

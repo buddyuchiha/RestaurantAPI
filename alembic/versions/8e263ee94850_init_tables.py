@@ -1,8 +1,8 @@
-"""Init Tables
+"""init_tables
 
-Revision ID: 3422e138ff74
+Revision ID: 8e263ee94850
 Revises: 
-Create Date: 2026-02-03 22:29:23.832821
+Create Date: 2026-02-05 21:31:33.649886
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '3422e138ff74'
+revision: str = '8e263ee94850'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,20 +28,25 @@ def upgrade() -> None:
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('login', sa.String(), nullable=False),
+    sa.Column('password', sa.String(), nullable=False),
     sa.Column('real_name', sa.String(), nullable=False),
     sa.Column('mail', sa.String(), nullable=False),
     sa.Column('phone_number', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('login')
     )
     op.create_table('bookings',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('table_id', sa.Integer(), nullable=False),
-    sa.Column('datetime', sa.DateTime(), nullable=False),
+    sa.Column('datetime', sa.DateTime(timezone=True), nullable=False),
     sa.Column('status', sa.Enum('ACTIVE', 'INACTIVE', name='bookingstatus'), nullable=False),
     sa.ForeignKeyConstraint(['table_id'], ['tables.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('table_id'),
+    sa.UniqueConstraint('user_id')
     )
     # ### end Alembic commands ###
 
