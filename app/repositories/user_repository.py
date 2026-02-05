@@ -2,10 +2,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import delete, select, update
 
 from app.models import UserORM
+from app.repositories import BaseRepository
 from app.schemas import UserScheme
 
 
-class UserRepository:
+class UserRepository(BaseRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 

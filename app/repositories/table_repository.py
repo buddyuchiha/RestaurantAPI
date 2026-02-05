@@ -48,7 +48,7 @@ class TableRepository(BaseRepository):
             return table
             
     
-    async def delete(self, id: int) -> None:
+    async def delete(self, id: int) -> bool:
         async with self.session as session:
             query = delete(TableORM).where(
                 TableORM.id == id
