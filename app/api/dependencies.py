@@ -16,7 +16,7 @@ from app.services import (
     AuthService,
     CacheService
 )
-from cache.accessor import get_cache_session
+from app.cache.accessor import get_cache_session
 
 
 def get_cache_service(
