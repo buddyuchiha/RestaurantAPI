@@ -2,8 +2,7 @@ import json
 
 from app.core import UserNotFound
 from app.repositories import UserRepository
-from app.schemas import UserScheme, UserSchemeResponse
-from app.schemas.user import UserCreateScheme
+from app.schemas import UserScheme, UserSchemeResponse, UserCreateScheme
 from app.services.cache_service import CacheService
 
 
@@ -16,7 +15,10 @@ class UserService:
         self.user_repository = user_repository
         self.cache_service = cache_service
         
-    async def create_user(self, user_scheme: UserScheme) -> UserSchemeResponse:
+    async def create_user(
+        self,
+        user_scheme: UserScheme
+    ) -> UserSchemeResponse:
         user = await self.user_repository.create(user_scheme)
         
         return UserSchemeResponse.model_validate(user)

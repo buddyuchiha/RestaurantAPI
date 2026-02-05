@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_user_service
-from app.core import UserUpdateField, logger
-from app.core.exception import UserNotFound
+from app.core import UserUpdateField, UserNotFound, logger
 from app.schemas import UserScheme, UserSchemeResponse
 from app.services import UserService
 
@@ -12,7 +11,7 @@ router = APIRouter(
     tags=["users"]
 )
 
-@router.get("/{user_id}")
+@router.get("/{user_id}", summary="Получить информацию о пользователе по ID")
 async def get_one_user(
     user_id: int,
     user_service: UserService = Depends(get_user_service)
@@ -26,7 +25,10 @@ async def get_one_user(
             detail=e.detail 
         )
 
-@router.get("/")
+@router.get(
+    "/",
+    summary="Получить список всех зарегистрированных пользователей"
+)
 async def get_users(
     user_service: UserService = Depends(get_user_service)
 ) -> list[UserSchemeResponse]:
@@ -39,14 +41,17 @@ async def get_users(
             detail=e.detail
         )
 
-@router.post("/")
+@router.post("/", summary="Создать новый профиль пользователя")
 async def create_user(
     user_scheme: UserScheme,
     user_service: UserService = Depends(get_user_service)
 ) -> UserSchemeResponse:
     return await user_service.create_user(user_scheme)
 
-@router.put("/{user_id}")
+@router.put(
+    "/{user_id}",
+    summary="Изменить конкретное поле в профиле пользователя"
+)
 async def update_user(
     user_id: int,
     update_field: UserUpdateField,
@@ -55,7 +60,10 @@ async def update_user(
 ) -> UserSchemeResponse:
     return await user_service.update_user(user_id, update_field.value, data)
 
-@router.delete("/{user_id}")
+@router.delete(
+    "/{user_id}",
+    summary="Полностью удалить пользователя из системы"
+)
 async def delete_user(
     user_id: int,
     user_service: UserService = Depends(get_user_service)

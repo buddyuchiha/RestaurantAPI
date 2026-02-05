@@ -1,4 +1,5 @@
 from typing import AsyncGenerator
+
 from redis import asyncio as redis
 
 from app.core import settings

@@ -1,6 +1,6 @@
 import json
-from app.core import TableStatus
-from app.core.exception import TableNotFound
+
+from app.core import TableStatus, TableNotFound
 from app.schemas import TableScheme
 from app.repositories import TableRepository
 from app.services.cache_service import CacheService
@@ -53,7 +53,6 @@ class TableService:
         
         return serialized_tables
         
-
     async def update_table(self, id: int, status: str) -> TableScheme:
         table = await self.table_repository.update(id, status)
         

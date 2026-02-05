@@ -17,11 +17,13 @@ class BookingORM(Base):
     )
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id"),
-        nullable=False
+        nullable=False,
+        unique=True
     )
     table_id: Mapped[int] = mapped_column(
         ForeignKey("tables.id"), 
-        nullable=False
+        nullable=False,
+        unique=True
     )
     datetime: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), 

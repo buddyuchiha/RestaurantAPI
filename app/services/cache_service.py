@@ -1,4 +1,5 @@
 from typing import Any, Type
+
 from pydantic import TypeAdapter
 import redis
 

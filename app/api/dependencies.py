@@ -1,4 +1,5 @@
 from typing import AsyncGenerator
+
 from fastapi import Depends, HTTPException, Request, Security, security
 import redis
 from sqlalchemy.orm import Session 
@@ -14,9 +15,9 @@ from app.services import (
     TableService,
     UserService,
     BookingService,
-    AuthService
+    AuthService,
+    CacheService
 )
-from app.services.cache_service import CacheService
 from cache.accessor import get_cache_session
 
 

@@ -8,7 +8,10 @@ from app.core.exception import (
     UserNotFound,
     WrongPassword,
     TokenExpired,
-    TokenNotCorrect
+    TokenNotCorrect,
+    UserExists,
+    TableNotFound,
+    BookingNotFound
 )
 from app.core.logging import logger
 from app.core.settings import settings
@@ -24,8 +27,11 @@ __all__ = [
     "get_hashed_password",
     "verify_hashed_password",
     "UserNotFound",
+    "UserExists"
     "WrongPassword",
     "TokenExpired",
     "TokenNotCorrect",
+    "TableNotFound",
+    "BookingNotFound",
     "logger"
     ]

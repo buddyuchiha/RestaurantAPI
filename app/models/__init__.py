@@ -3,4 +3,4 @@ from app.models.table import TableORM
 from app.models.user import UserORM 
 
 
-__all__ = ["BookingORM", "TableORM", "UsersORM"]
+__all__ = ["BookingORM", "TableORM", "UserORM"]

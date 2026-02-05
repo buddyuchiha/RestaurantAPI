@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import delete, select, update
 
-
 from app.models import UserORM
-from app.schemas.user import UserScheme
+from app.schemas import UserScheme
 
 
 class UserRepository:
@@ -56,6 +55,7 @@ class UserRepository:
         async with self.session as session:
             query = delete(UserORM).where(UserORM.id == id)
             await session.execute(query)
+            await session.commit()
             
             return True
         

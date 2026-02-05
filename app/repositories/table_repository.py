@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import delete, select, update
 
-from app.core.enum import TableStatus
+from app.core import TableStatus
 from app.repositories import BaseRepository
 from app.models import TableORM
 

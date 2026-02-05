@@ -1,9 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_table_service
-from app.core import logger
-from app.core.enum import TableStatus
-from app.core.exception import TableNotFound
+from app.core import logger, TableStatus, TableNotFound
 from app.schemas import TableScheme
 from app.services import TableService
 
@@ -13,14 +11,20 @@ router = APIRouter(
     tags=["tables"]
 )
 
-@router.get("/status")
+@router.get(
+    "/status",
+    summary="Получить список столов по статусу (свободен/занят)"
+)
 async def get_tables_by_status(
     table_status: TableStatus,
     table_service: TableService = Depends(get_table_service)
 ) -> list[TableScheme]:
     return await table_service.get_tables_by_status(table_status)
 
-@router.get("/{table_id}")
+@router.get(
+    "/{table_id}",
+    summary="Получить детальную информацию о столе"
+)
 async def get_one_table(
     table_id: int,
     table_service: TableService = Depends(get_table_service)
@@ -34,7 +38,10 @@ async def get_one_table(
             detail=e.detail
         )
 
-@router.get("/")
+@router.get(
+    "/", 
+    summary="Получить список всех существующих столов"
+)
 async def get_tables(
     table_service: TableService = Depends(get_table_service)
 ) -> list[TableScheme]:
@@ -48,13 +55,13 @@ async def get_tables(
             detail=e.detail
         )
 
-@router.post("/")
+@router.post("/", summary="Добавить новый стол в базу")
 async def create_table(
     table_service: TableService = Depends(get_table_service)
 ) -> TableScheme:
     return await table_service.create_table()
 
-@router.put("/{table_id}")
+@router.put("/{table_id}", summary="Изменить статус или параметры стола")
 async def update_table(
     table_id: int, 
     table_status: TableStatus,
@@ -62,7 +69,7 @@ async def update_table(
 ) -> TableScheme:
     return await table_service.update_table(table_id, table_status)  
 
-@router.delete("/{table_id}")
+@router.delete("/{table_id}", summary="Удалить стол из системы")
 async def delete_table(
     table_id: int,
     table_service: TableService = Depends(get_table_service)

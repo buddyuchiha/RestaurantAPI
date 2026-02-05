@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.api import get_auth_service
-from app.core import WrongPassword, UserNotFound, logger
-from app.core.exception import UserExists
+from app.core import WrongPassword, UserNotFound, logger, UserExists
 from app.schemas import (
     UserScheme,
     UserSchemeResponse,
@@ -17,7 +16,7 @@ router = APIRouter(
     tags=["auth"]
 )
 
-@router.post("/register")
+@router.post("/register", summary="Регистрация нового пользователя")
 async def regitser(
     user: UserScheme,
     auth_service: AuthService = Depends(get_auth_service)
@@ -31,7 +30,7 @@ async def regitser(
             detail=e.detail
         )
 
-@router.post("/login")
+@router.post("/login", summary="Авторизация и получение JWT-токена")
 async def login(
     user: UserLoginScheme,
     auth_service: AuthService = Depends(get_auth_service)
