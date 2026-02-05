@@ -118,6 +118,3 @@
 Все настройки можно регулировать в .env
 
 <img width="852" height="446" alt="{56B85513-ACDF-446E-AA02-EA1477C4E2F8}" src="https://github.com/user-attachments/assets/32f23a48-a831-4e50-bf1f-ace25f40d8c3" />
-
-<img width="253" height="40" alt="image" src="https://github.com/user-attachments/assets/61946965-cb1d-4705-b800-bd36fd14ad4a" />
-
