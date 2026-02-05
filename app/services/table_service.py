@@ -1,12 +1,19 @@
+import json
 from app.core import TableStatus
 from app.core.exception import TableNotFound
 from app.schemas import TableScheme
 from app.repositories import TableRepository
+from app.services.cache_service import CacheService
 
 
 class TableService:
-    def __init__(self, table_repository: TableRepository) -> None:
+    def __init__(
+        self, 
+        table_repository: TableRepository,
+        cache_service: CacheService
+        ) -> None:
         self.table_repository = table_repository 
+        self.cache_service = cache_service
     
     async def create_table(self) -> TableScheme:
         table = await self.table_repository.create()
@@ -22,9 +29,25 @@ class TableService:
         return TableScheme.model_validate(table)
     
     async def get_tables(self) -> list[TableScheme]:
-        tables = await self.table_repository.get_all()
+        if tables := await self.cache_service.get_values("tables"):
+            return [
+                TableScheme.model_validate(json.loads(table)) \
+                    for table in tables
+            ]
         
-        return [TableScheme.model_validate(table) for table in tables]
+        tables = await self.table_repository.get_all()
+        serialized_tables = [
+            TableScheme.model_validate(table) for table in tables
+        ]
+        
+        await self.cache_service.set_values(
+            "tables",
+            serialized_tables,
+            list[TableScheme]
+        )
+        
+        return serialized_tables
+        
 
     async def update_table(self, id: int, status: str) -> TableScheme:
         table = await self.table_repository.update(id, status)

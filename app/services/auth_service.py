@@ -7,7 +7,7 @@ from app.core import (
     verify_hashed_password,
     WrongPassword
 )
-from app.core.exception import TokenExpired, TokenNotCorrect, UserExists
+from app.core.exception import TokenExpired, TokenNotCorrect, UserExists, UserNotFound
 from app.schemas import (
     UserScheme,
     UserSchemeResponse,
@@ -32,6 +32,9 @@ class AuthService:
     
     async def login_user(self, user: UserLoginScheme) -> TokenResponse:
         db_user = await self.user_service.get_user_by_login(user.login)
+        
+        if not db_user:
+            raise UserNotFound
         
         if not verify_hashed_password(user.password, db_user.password):
             raise WrongPassword

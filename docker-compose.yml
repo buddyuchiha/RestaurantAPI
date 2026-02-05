@@ -12,3 +12,11 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
 
+  redis-cache:
+    image: redis:latest
+    restart: always
+    command: redis-server --requirepass "${REDIS_PASSWORD}"
+    ports:
+      - "${REDIS_PORT}:6379"
+
+

@@ -20,8 +20,12 @@ class DatabaseSettings(BaseSettings):
     def database_url(self):
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
+
 class CacheSettings():
-    pass 
+    REDIS_HOST: str 
+    REDIS_PORT: int 
+    REDIS_PASSWORD: str
+    REDIS_EXP: int
 
 
 class Settings(
