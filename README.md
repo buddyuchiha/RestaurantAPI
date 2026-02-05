@@ -85,7 +85,7 @@
 
 <img width="677" height="68" alt="{DD1C58AC-622B-48A0-A0EC-1E74AB15C86A}" src="https://github.com/user-attachments/assets/8f2925b0-b080-46df-b7e6-771b8e08860c" />
 
-6) Выполнить команду python -m app.main и перейти на http://127.0.0.1:8000/docs
+7) Выполнить команду python -m app.main и перейти на http://127.0.0.1:8000/docs
 
 <img width="725" height="70" alt="{221B42AC-CADC-4F3F-B9B2-778301004D11}" src="https://github.com/user-attachments/assets/b770dee3-437e-4bda-8b61-81ae0394393e" />
 
